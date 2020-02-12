@@ -12,14 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ==============================================================================
-"""QuantizeProviders specific for TFLite."""
+"""QuantizeConfigs specific for TFLite."""
 
-from tensorflow_model_optimization.python.core.quantization.keras import quantize_provider
+from tensorflow_model_optimization.python.core.quantization.keras import quantize_config
 from tensorflow_model_optimization.python.core.quantization.keras import quantizers
 
 
-class OutputQuantizeProvider(quantize_provider.QuantizeProvider):
-  """QuantizeProvider which only quantizes the output from a layer."""
+class OutputQuantizeConfig(quantize_config.QuantizeConfig):
+  """QuantizeConfig which only quantizes the output from a layer."""
 
   def get_weights_and_quantizers(self, layer):
     return []
@@ -34,15 +34,17 @@ class OutputQuantizeProvider(quantize_provider.QuantizeProvider):
     pass
 
   def get_output_quantizers(self, layer):
-    return [quantizers.MovingAverageQuantizer(
-        num_bits=8, per_axis=False, symmetric=False, narrow_range=False)]
+    return [
+        quantizers.MovingAverageQuantizer(
+            num_bits=8, per_axis=False, symmetric=False, narrow_range=False)
+    ]
 
   def get_config(self):
     return {}
 
 
-class NoOpQuantizeProvider(quantize_provider.QuantizeProvider):
-  """QuantizeProvider which does not quantize any part of the layer."""
+class NoOpQuantizeConfig(quantize_config.QuantizeConfig):
+  """QuantizeConfig which does not quantize any part of the layer."""
 
   def get_weights_and_quantizers(self, layer):
     return []
@@ -61,4 +63,3 @@ class NoOpQuantizeProvider(quantize_provider.QuantizeProvider):
 
   def get_config(self):
     return {}
-
